@@ -5,18 +5,13 @@ const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
 module.exports = async function () {
   return {
+    useYarn: true,
     scenarios: [
       {
-        name: 'ember-3.11',
-        npm: {
-          devDependencies: {
-            'ember-source': '~3.11.1'
-          }
-        },
         name: 'ember-lts-3.20',
         npm: {
           devDependencies: {
-            'ember-source': '~3.20.5',
+            'ember-source': '~3.20.0',
           },
         },
       },
@@ -29,10 +24,22 @@ module.exports = async function () {
         },
       },
       {
+        name: 'ember-lts-3.28',
+        npm: {
+          devDependencies: {
+            'ember-source': '~3.28.0',
+          },
+        },
+      },
+      {
         name: 'ember-release',
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('release'),
+          },
+          dependencies: {
+            'ember-auto-import': '^2.2.4',
+            webpack: '^5.64.4',
           },
         },
       },
@@ -42,6 +49,10 @@ module.exports = async function () {
           devDependencies: {
             'ember-source': await getChannelURL('beta'),
           },
+          dependencies: {
+            'ember-auto-import': '^2.2.4',
+            webpack: '^5.64.4',
+          },
         },
       },
       {
@@ -49,6 +60,10 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('canary'),
+          },
+          dependencies: {
+            'ember-auto-import': '^2.2.4',
+            webpack: '^5.64.4',
           },
         },
       },
