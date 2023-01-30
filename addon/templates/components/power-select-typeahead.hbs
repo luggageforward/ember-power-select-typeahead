@@ -12,7 +12,7 @@
   @defaultHighlighted={{@defaultHighlighted}}
   @destination={{@destination}}
   @disabled={{@disabled}}
-  @dropdownClass={{this.concatenatedDropdownClasses}}
+  @dropdownClass="ember-power-select-typeahead-dropdown {{@dropdownClass}}"
   @extra={{@extra}}
   @groupComponent={{@groupComponent}}
   @horizontalPosition={{@horizontalPosition}}
@@ -26,7 +26,7 @@
   @onClose={{@onClose}}
   @onFocus={{@onFocus}}
   @onInput={{@onInput}}
-  @onKeydown={{action "onKeyDown"}}
+  @onKeydown={{this.onKeyDown}}
   @onOpen={{@onOpen}}
   @options={{@options}}
   @optionsComponent={{@optionsComponent}}
@@ -42,7 +42,7 @@
   @selected={{@selected}}
   @selectedItemComponent={{@selectedItemComponent}}
   @tabindex={{this.tabindex}}
-  @triggerClass={{this.concatenatedTriggerClasses}}
+  @triggerClass="ember-power-select-typeahead-trigger {{@triggerClass}}"
   @triggerComponent={{this.triggerComponent}}
   @triggerId={{@triggerId}}
   @triggerRole={{false}}

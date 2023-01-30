@@ -1,49 +1,38 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
-import layout from '../templates/components/power-select-typeahead';
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  tagName: '',
-  layout,
-  tabindex: -1,
-  triggerComponent: 'power-select-typeahead/trigger',
-  beforeOptionsComponent: null,
-  loadingMessage: null,
-  noMatchesMessage: null,
-  onkeydown: () => {},
-
-  // CPs
-  concatenatedTriggerClasses: computed('triggerClass', function() {
-    let classes = ['ember-power-select-typeahead-trigger'];
-    let passedClass = this.get('triggerClass');
-    if (passedClass) {
-      classes.push(passedClass);
-    }
-    return classes.join(' ');
-  }),
-
-  concatenatedDropdownClasses: computed('dropdownClass', function() {
-    let classes = ['ember-power-select-typeahead-dropdown'];
-    let passedClass = this.get('dropdownClass');
-    if (passedClass) {
-      classes.push(passedClass);
-    }
-    return classes.join(' ');
-  }),
-
-  actions: {
-    onKeyDown(select, e) {
-      let action = this.get('onkeydown');
-
-      // if user passes `onkeydown` action
-      if (action && action(select, e) === false) {
-        return false;
-      } else {
-        // if escape, then clear out selection
-        if (e.keyCode === 27) {
-          select.actions.choose(null);
-        }
-      }
-    }
+export default class PowerSelectTypeahead extends Component {
+  get beforeOptionsComponent() {
+    return this.args.beforeOptionsComponent ?? null;
   }
-});
+
+  get loadingMessage() {
+    return this.args.loadingMessage ?? null;
+  }
+
+  get noMatchesMessage() {
+    return this.args.noMatchesMessage ?? null;
+  }
+
+  get tabindex() {
+    return this.args.tabindex ?? -1;
+  }
+
+  get triggerComponent() {
+    return this.args.triggerComponent ?? 'power-select-typeahead/trigger';
+  }
+
+  @action
+  onKeyDown(select, e) {
+    if (this.args.onKeydown && this.args.onKeydown(select, e) === false) {
+      return false;
+    }
+
+    // if escape, then clear out selection
+    if (e.keyCode === 27) {
+      select.actions.choose(null);
+    }
+
+    return;
+  }
+}
