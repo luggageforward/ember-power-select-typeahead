@@ -1,8 +1,9 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 import RSVP from 'rsvp';
 import { later } from '@ember/runloop';
 
-const numbers = [
+const NUMBERS = [
   'one',
   'two',
   'three',
@@ -25,7 +26,7 @@ const numbers = [
   'twenty'
 ];
 
-const users = [
+const USERS = [
   { name: 'Arthur' },
   { name: 'Sam' },
   { name: 'Dan' },
@@ -37,48 +38,50 @@ const users = [
   { name: 'Jamie' },
   { name: 'Matteo' }
 ];
-const extra = { labelPath: 'name' };
+const EXTRA = { labelPath: 'name' };
 
-export default Controller.extend({
-  numbers,
-  users,
-  extra,
+export default class ApplicationController extends Controller {
+  numbers = NUMBERS;
+  users = USERS;
+  extra = EXTRA;
 
-  actions: {
-    skipShortSearches(term, select) {
-      if (term.length <= 2) {
-        select.actions.search('');
-        return false;
-      }
-    },
-
-    search(term) {
-      return numbers.filter((num) => num.indexOf(term) > -1);
-    },
-
-    searchAsync(term) {
-      return new RSVP.Promise(function(resolve) {
-        if (term.length === 0) {
-          resolve([]);
-        } else {
-          later(function() {
-            resolve(numbers.filter((num) => num.indexOf(term) > -1));
-          }, 600);
-        }
-      });
-    },
-
-    searchUsersAsync(term) {
-      // return users.filter(u => u.name.indexOf(term) > -1);
-      return new RSVP.Promise(function(resolve) {
-        if (term.length === 0) {
-          resolve([]);
-        } else {
-          later(function() {
-            resolve(users.filter((u) => u.name.indexOf(term) > -1));
-          }, 600);
-        }
-      });
+  @action
+  skipShortSearches(term, select) {
+    if (term.length <= 2) {
+      select.actions.search('');
+      return false;
     }
   }
-});
+
+  @action
+  search(term) {
+    return NUMBERS.filter((num) => num.indexOf(term) > -1);
+  }
+
+  @action
+  searchAsync(term) {
+    return new RSVP.Promise((resolve) => {
+      if (term.length === 0) {
+        resolve([]);
+      } else {
+        later(function() {
+          resolve(NUMBERS.filter((num) => num.indexOf(term) > -1));
+        }, 600);
+      }
+    });
+  }
+
+  @action
+  searchUsersAsync(term) {
+    // return users.filter(u => u.name.indexOf(term) > -1);
+    return new RSVP.Promise((resolve) => {
+      if (term.length === 0) {
+        resolve([]);
+      } else {
+        later(function() {
+          resolve(USERS.filter((u) => u.name.indexOf(term) > -1));
+        }, 600);
+      }
+    });
+  }
+};
